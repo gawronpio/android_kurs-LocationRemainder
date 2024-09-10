@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.example.locationremainder.R
 import com.example.locationremainder.databinding.FragmentWelcomeBinding
 import com.firebase.ui.auth.AuthUI
@@ -57,7 +58,6 @@ class WelcomeFragment : Fragment() {
     }
 
     private fun navigateToHome() {
-        // TODO: Navigate to HomeFragment
-//        findNavController().navigate(WelcomeFragmentDirections.actionWelcomeFragmentToHomeFragment())
+        findNavController().navigate(WelcomeFragmentDirections.actionWelcomeFragmentToMainFragment())
     }
 }

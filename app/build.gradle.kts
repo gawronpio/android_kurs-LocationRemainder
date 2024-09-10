@@ -44,33 +44,37 @@ android {
         arg("room.schemaLocation", "$projectDir/schemas")
 
     }
+}
 
-    dependencies {
-        ksp(libs.androidx.room.compiler)
+dependencies {
+    ksp(libs.androidx.room.compiler)
 
-        implementation(libs.androidx.core.ktx)
-        implementation(libs.androidx.appcompat)
-        implementation(libs.material)
-        implementation(libs.androidx.activity)
-        implementation(libs.androidx.constraintlayout)
-        implementation(libs.androidx.databinding.runtime)
-        implementation(libs.androidx.lifecycle.runtime.ktx)
-        implementation(libs.androidx.lifecycle.viewmodel.ktx)
-        implementation(libs.androidx.navigation.fragment.ktx)
-        implementation(libs.androidx.navigation.ui.ktx)
-        implementation(libs.androidx.navigation.runtime.ktx)
-        implementation(libs.androidx.room.runtime)
-        implementation(libs.androidx.room.ktx)
-        implementation(libs.androidx.room.gradle.plugin)
-        implementation(libs.androidx.work.runtime.ktx)
-        implementation(libs.firebase.auth.ktx)
-        implementation(platform(libs.firebase.bom))
-        implementation(libs.firebase.ui.auth)
-        implementation(libs.google.services)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.databinding.runtime)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.gradle.plugin)
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.firebase.auth.ktx)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.ui.auth)
+    implementation(libs.google.services)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.fragment.ktx)
 
-        testImplementation(libs.junit)
+    testImplementation(libs.junit)
 
-        androidTestImplementation(libs.androidx.junit)
-        androidTestImplementation(libs.androidx.espresso.core)
-    }
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

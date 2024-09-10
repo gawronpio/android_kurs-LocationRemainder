@@ -7,5 +7,13 @@
     <fragment
         android:id="@+id/welcomeFragment"
         android:name="com.example.locationremainder.ui.welcome.WelcomeFragment"
-        android:label="WelcomeFragment" />
+        android:label="WelcomeFragment" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.locationremainder.ui.main.MainFragment"
+        android:label="MainFragment" />
 </navigation>
