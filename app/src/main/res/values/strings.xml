@@ -2,4 +2,6 @@
     <string name="app_name">Location Remainder</string>
     <string name="welcome_string">Welcome to the Location Remainder app.</string>
     <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="logout_failed">Logout failed</string>
 </resources>
