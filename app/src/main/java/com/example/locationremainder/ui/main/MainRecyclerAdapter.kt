@@ -13,12 +13,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainListener(val clickListener: (id: Long) -> Unit) {
-    fun onClick(poi: Poi) = clickListener(poi.id)
+    fun onClick(poi: Poi) = clickListener(poi.id!!)
 }
 
 sealed class DataItem {
     data class PoiRecyclerItem(val poi: Poi) : DataItem() {
-        override val id = poi.id
+        override val id: Long = poi.id!!
     }
 
     abstract val id: Long

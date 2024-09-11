@@ -22,10 +22,25 @@
         <action
             android:id="@+id/action_mainFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.example.locationremainder.ui.map.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.locationremainder.ui.detail.DetailFragment"
+        android:label="DetailFragment" >
+        <argument
+            android:name="poiData"
+            app:argType="com.example.locationremainder.data.Poi"/>
+    </fragment>
 </navigation>

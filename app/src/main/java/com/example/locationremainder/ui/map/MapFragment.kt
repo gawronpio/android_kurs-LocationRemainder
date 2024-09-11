@@ -3,13 +3,16 @@ package com.example.locationremainder.ui.map
 import android.annotation.SuppressLint
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.example.locationremainder.R
+import com.example.locationremainder.data.Poi
 import com.example.locationremainder.databinding.FragmentMapBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -40,12 +43,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         binding.mapView.getMapAsync(this)
 
         binding.poiPickedBtn.setOnClickListener {
-            if(viewModel.poi_location == null) {
+            if(viewModel.poi.location.isBlank()) {
                 Toast.makeText(requireContext(), getString(R.string.poi_needed), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            // TODO navigate to Detail Fragment
-//            findNavController().navigate(MapFragmentDirections.actionMapFragmentToMainFragment(viewModel.poi_location!!))
+            findNavController().navigate(MapFragmentDirections.actionMapFragmentToDetailFragment(viewModel.poi))
         }
     }
 
@@ -93,7 +95,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     .title(poi.name)
             )
             poiMarker?.showInfoWindow()
-            viewModel.poi_location = poi.latLng
+            viewModel.poi = Poi(
+                latitude = poi.latLng.latitude,
+                longitude = poi.latLng.longitude,
+                location = poi.name
+            )
         }
     }
 }

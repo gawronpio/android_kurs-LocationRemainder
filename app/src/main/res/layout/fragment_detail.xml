@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="detailViewModel"
+            type="com.example.locationremainder.ui.detail.DetailViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.detail.DetailFragment">
+
+        <EditText
+            android:id="@+id/detail_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:ems="10"
+            android:hint="@string/title"
+            android:inputType="text"
+            android:text="@{detailViewModel.poiData.title ?? ``}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/detail_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:ems="10"
+            android:gravity="start|top"
+            android:hint="@string/description"
+            android:inputType="textMultiLine"
+            android:minLines="4"
+            android:text="@{detailViewModel.poiData.description ?? ``}"
+            app:layout_constraintEnd_toEndOf="@+id/detail_title"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/detail_title"
+            app:layout_constraintTop_toBottomOf="@+id/detail_title" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:src="@drawable/ic_location"
+            app:layout_constraintStart_toStartOf="@+id/detail_title"
+            app:layout_constraintTop_toBottomOf="@+id/detail_radius_seekbar" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:text="@string/remainder_location"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+        <TextView
+            android:id="@+id/detail_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_medium"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@{detailViewModel.poiData.location}"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:text="Somewhere"/>
+
+        <SeekBar
+            android:id="@+id/detail_radius_seekbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:min="@string/min_radius"
+            android:max="@string/max_radius"
+            app:layout_constraintEnd_toStartOf="@+id/detail_radius_text"
+            app:layout_constraintStart_toStartOf="@+id/detail_title"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:text="@string/radius"
+            app:layout_constraintStart_toStartOf="@+id/detail_title"
+            app:layout_constraintTop_toBottomOf="@+id/detail_description" />
+
+        <TextView
+            android:id="@+id/detail_radius_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="3"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_radius_seekbar"
+            app:layout_constraintEnd_toEndOf="@+id/detail_title"
+            app:layout_constraintTop_toTopOf="@+id/detail_radius_seekbar"
+            tools:text="8888m" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:text="@string/latitude"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/detail_location" />
+
+        <TextView
+            android:id="@+id/detail_latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_medium"
+            android:layout_marginTop="@dimen/margin_small"
+            app:setDouble="@{detailViewModel.poiData.latitude}"
+            app:layout_constraintStart_toStartOf="@+id/textView5"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            tools:text="20.4293"/>
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:text="@string/longitude"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/detail_latitude" />
+
+        <TextView
+            android:id="@+id/detail_longitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_medium"
+            android:layout_marginTop="@dimen/margin_small"
+            app:setDouble="@{detailViewModel.poiData.longitude}"
+            app:layout_constraintStart_toStartOf="@+id/textView7"
+            app:layout_constraintTop_toBottomOf="@+id/textView7"
+            tools:text="50.4312"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/detail_save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:backgroundTint="@color/colorAccent"
+            android:clickable="true"
+            android:src="@drawable/ic_save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

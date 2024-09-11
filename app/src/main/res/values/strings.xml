@@ -8,12 +8,23 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="poi_needed">Please pick a location firstly</string>
-
-    <string name="default_latitude">52.225665764</string>
-    <string name="default_longitude">21.003833318</string>
-    <string name="default_zoom_level">15f</string>
     <string name="location_permissions_denied">Location privileges have not been granted!\nThe functionality of the application is significantly limited.</string>
     <string name="accept_poi_desc">Accepts POI as remainder location</string>
     <string name="adds_new_remainder_location_desc">Adds new remainder location</string>
     <string name="no_data">No data</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="remainder_location">Remainder location</string>
+    <string name="radius">Radius</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+
+    <string name="unit_m">%1$dm</string>
+
+    <string name="default_latitude">52.225665764</string>
+    <string name="default_longitude">21.003833318</string>
+    <string name="default_zoom_level">15f</string>
+    <string name="max_radius">1000</string>
+    <string name="min_radius">15</string>
+    <string name="fields_needed">Set Title before save</string>
 </resources>

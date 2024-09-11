@@ -17,14 +17,17 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.locationremainder.R
+import com.example.locationremainder.data.Poi
 import com.example.locationremainder.data.PoiDao
 import com.example.locationremainder.data.PoiDatabase
 import com.example.locationremainder.databinding.FragmentMainBinding
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
 
@@ -80,7 +83,13 @@ class MainFragment : Fragment() {
         val manager = LinearLayoutManager(activity)
         binding.poiRecycler.layoutManager = manager
         val adapter = MainRecyclerAdapter(MainListener { poiId ->
-            // TODO implement navigate do detail fragment
+            var poiData: Poi? = null
+            lifecycleScope.launch {
+                poiData = poiDao.get(poiId)
+            }
+            poiData?.let {
+                findNavController().navigate(MainFragmentDirections.actionMainFragmentToDetailFragment(it))
+            }
         })
         binding.poiRecycler.adapter = adapter
 

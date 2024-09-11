@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.locationremainder.R
+import com.example.locationremainder.data.Poi
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 
@@ -33,7 +34,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
     private val app = application
     private val resources = app.resources
 
-    var poi_location: LatLng? = null
+    var poi = Poi()
 
     init {
         val lat = resources.getString(R.string.default_latitude).toDoubleOrNull() ?: 0.0

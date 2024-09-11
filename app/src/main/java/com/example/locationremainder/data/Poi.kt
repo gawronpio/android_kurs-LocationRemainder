@@ -1,19 +1,22 @@
 package com.example.locationremainder.data
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "poi_table")
 data class Poi(
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0L,
+    var id: Long? = null,
 
     @ColumnInfo(name = "title")
-    val title: String = "",
+    var title: String? = null,
 
     @ColumnInfo(name = "description")
-    var description: String = "",
+    var description: String? = null,
 
     @ColumnInfo(name = "longitude")
     var longitude: Double = 0.0,
@@ -22,5 +25,8 @@ data class Poi(
     var latitude: Double = 0.0,
 
     @ColumnInfo(name = "radius")
-    var radius: Double = 0.0
-)
+    var radius: Double? = null,
+
+    @ColumnInfo(name = "location")
+    var location: String = ""
+): Parcelable
