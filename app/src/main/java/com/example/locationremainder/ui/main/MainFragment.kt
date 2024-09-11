@@ -12,10 +12,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,8 +25,6 @@ import com.example.locationremainder.data.PoiDatabase
 import com.example.locationremainder.databinding.FragmentMainBinding
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 class MainFragment : Fragment() {
 
@@ -88,6 +86,17 @@ class MainFragment : Fragment() {
 
         binding.addBtn.setOnClickListener {
             findNavController().navigate(MainFragmentDirections.actionMainFragmentToMapFragment())
+        }
+
+        viewModel.pois.observe(viewLifecycleOwner) {
+            if(it.isNullOrEmpty()) {
+                binding.noDataImg.isVisible = true
+                binding.noDataText.isVisible = true
+            } else {
+                adapter.addAndSubmitList(it)
+                binding.noDataImg.isVisible = false
+                binding.noDataText.isVisible = false
+            }
         }
 
         return binding.root

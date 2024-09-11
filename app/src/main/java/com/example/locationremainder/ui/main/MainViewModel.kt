@@ -2,9 +2,13 @@ package com.example.locationremainder.ui.main
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.example.locationremainder.data.Poi
 import com.example.locationremainder.data.PoiDao
+import kotlinx.coroutines.launch
 
 class MainViewModelFactory(
     private val poiDao: PoiDao,
@@ -19,5 +23,9 @@ class MainViewModelFactory(
 }
 
 class MainViewModel(poiDao: PoiDao, application: Application) : AndroidViewModel(application) {
-    // TODO: Implement the ViewModel
+    var pois = MutableLiveData<List<Poi>?>(null)
+
+    init {
+        viewModelScope.launch { pois.value =  poiDao.getAll() }
+    }
 }
