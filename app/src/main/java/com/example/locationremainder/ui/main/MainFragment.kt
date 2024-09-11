@@ -3,6 +3,7 @@ package com.example.locationremainder.ui.main
 import android.content.pm.PackageManager
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -48,7 +49,7 @@ class MainFragment : Fragment() {
                         .signOut(requireContext())
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                findNavController().popBackStack(R.id.welcomeFragment, false)
+                                findNavController().navigateUp()
                             } else {
                                 Toast.makeText(requireContext(), getString(R.string.logout_failed), Toast.LENGTH_SHORT).show()
                             }
