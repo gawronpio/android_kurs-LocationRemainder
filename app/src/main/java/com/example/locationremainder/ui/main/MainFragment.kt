@@ -50,7 +50,7 @@ class MainFragment : Fragment() {
                             if (task.isSuccessful) {
                                 findNavController().popBackStack(R.id.welcomeFragment, false)
                             } else {
-                                Toast.makeText(requireContext(), getString(R.string.logout), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), getString(R.string.logout_failed), Toast.LENGTH_SHORT).show()
                             }
                         }
                     return true
@@ -84,17 +84,6 @@ class MainFragment : Fragment() {
             // TODO implement navigate do detail fragment
         })
         binding.poiRecycler.adapter = adapter
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if(Firebase.auth.currentUser != null) {
-                    requireActivity().finishAffinity()
-                } else {
-                    isEnabled = false
-                    requireActivity().onBackPressedDispatcher.onBackPressed()
-                }
-            }
-        })
 
         binding.addBtn.setOnClickListener {
             findNavController().navigate(MainFragmentDirections.actionMainFragmentToMapFragment())
