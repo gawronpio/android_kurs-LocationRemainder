@@ -1,5 +1,6 @@
 package com.example.locationremainder.ui.main
 
+import android.content.pm.PackageManager
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,10 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.locationremainder.R
@@ -22,6 +23,7 @@ import com.example.locationremainder.data.PoiDao
 import com.example.locationremainder.data.PoiDatabase
 import com.example.locationremainder.databinding.FragmentMainBinding
 import com.firebase.ui.auth.AuthUI
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -58,6 +60,15 @@ class MainFragment : Fragment() {
         }
     }
 
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (!isGranted) {
+            Toast.makeText(requireContext(),
+                getString(R.string.location_permissions_denied), Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -85,11 +96,37 @@ class MainFragment : Fragment() {
             }
         })
 
+        binding.addBtn.setOnClickListener {
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToMapFragment())
+        }
+
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        checkLocationPermission()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         requireActivity().removeMenuProvider(menuProvider)
+    }
+
+    private fun checkLocationPermission() {
+        if(ContextCompat.checkSelfPermission(
+                requireContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
+            val snackbar = Snackbar.make(
+                binding.root,
+                getString(R.string.location_request_info),
+                Snackbar.LENGTH_INDEFINITE)
+            snackbar.setAction(getString(R.string.ok)) {
+                requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+            snackbar.show()
+        }
     }
 }

@@ -19,6 +19,5 @@
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:background">@color/colorAccent</item>
         <item name="backgroundTint">@color/colorAccent</item>
-
-    </style>W
+    </style>
 </resources>

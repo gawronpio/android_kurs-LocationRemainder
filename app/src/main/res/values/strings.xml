@@ -4,4 +4,15 @@
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="logout_failed">Logout failed</string>
+    <string name="location_request_info">This application requires access to a precise location for best performance.\nPlease allow this access on the next screen.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="poi_needed">Please pick a location firstly</string>
+
+    <string name="default_latitude">52.225665764</string>
+    <string name="default_longitude">21.003833318</string>
+    <string name="default_zoom_level">15f</string>
+    <string name="location_permissions_denied">Location privileges have not been granted!\nThe functionality of the application is significantly limited.</string>
+    <string name="accept_poi_desc">Accepts POI as remainder location</string>
+    <string name="adds_new_remainder_location_desc">Adds new remainder location</string>
 </resources>
