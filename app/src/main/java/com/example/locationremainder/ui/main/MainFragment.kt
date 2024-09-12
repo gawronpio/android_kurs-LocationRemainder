@@ -83,12 +83,11 @@ class MainFragment : Fragment() {
         val manager = LinearLayoutManager(activity)
         binding.poiRecycler.layoutManager = manager
         val adapter = MainRecyclerAdapter(MainListener { poiId ->
-            var poiData: Poi? = null
             lifecycleScope.launch {
-                poiData = poiDao.get(poiId)
-            }
-            poiData?.let {
-                findNavController().navigate(MainFragmentDirections.actionMainFragmentToDetailFragment(it))
+                val poiData = poiDao.get(poiId)
+                poiData?.let {
+                    findNavController().navigate(MainFragmentDirections.actionMainFragmentToDetailFragment(it))
+                }
             }
         })
         binding.poiRecycler.adapter = adapter

@@ -13,7 +13,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainListener(val clickListener: (id: Long) -> Unit) {
-    fun onClick(poi: Poi) = clickListener(poi.id!!)
+    fun onClick(poi: Poi) {
+        clickListener(poi.id!!)
+    }
 }
 
 sealed class DataItem {
