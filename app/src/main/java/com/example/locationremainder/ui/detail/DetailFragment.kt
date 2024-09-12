@@ -50,6 +50,7 @@ class DetailFragment : Fragment() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
+        binding.detailRadiusSeekbar.progress = viewModel.poiData?.radius?.toInt() ?: getString(R.string.default_radius).toInt()
 
         binding.detailSaveBtn.setOnClickListener {
             if(binding.detailTitle.text.isNullOrBlank()) {

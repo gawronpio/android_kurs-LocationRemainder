@@ -26,5 +26,6 @@
     <string name="default_zoom_level">15f</string>
     <string name="max_radius">1000</string>
     <string name="min_radius">15</string>
+    <string name="default_radius">100</string>
     <string name="fields_needed">Set Title before save</string>
 </resources>

@@ -26,11 +26,17 @@ class DetailViewModel(private val poiDao: PoiDao) : ViewModel() {
     var poiData: Poi? = null
 
     fun savePoi() {
-        viewModelScope.launch {
-            if (poiData!!.id == null) {
-                poiDao.update(poiData!!)
-            } else {
-                poiDao.insert(poiData!!)
+        if(poiData == null) {
+            Log.e(TAG, "poiData is null")
+            return
+        }
+        poiData?.let { data ->
+            viewModelScope.launch {
+                if (data.id == null) {
+                    poiDao.insert(data)
+                } else {
+                    poiDao.update(data)
+                }
             }
         }
     }
