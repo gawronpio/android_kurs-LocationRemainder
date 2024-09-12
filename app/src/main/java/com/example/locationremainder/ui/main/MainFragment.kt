@@ -20,6 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.locationremainder.R
+import com.example.locationremainder.data.Poi
 import com.example.locationremainder.data.PoiDao
 import com.example.locationremainder.data.PoiDatabase
 import com.example.locationremainder.databinding.FragmentMainBinding
@@ -106,6 +107,15 @@ class MainFragment : Fragment() {
         }
 
         viewModel.refresh()
+
+        parentFragmentManager.setFragmentResultListener("poiData", this) { key, bundle ->
+            val newPoi: Poi? = bundle.getParcelable("newPoi")
+            newPoi?.let { viewModel.saveNewPoiAndRefresh(it) }
+        }
+
+        viewModel.newPoi.observe(viewLifecycleOwner) {
+            it?.let { viewModel.createGeofence() }
+        }
 
         return binding.root
     }

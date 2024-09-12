@@ -8,7 +8,7 @@ import androidx.room.Update
 @Dao
 interface PoiDao {
     @Insert
-    suspend fun insert(poi: Poi)
+    suspend fun insert(poi: Poi): Long
 
     @Update
     suspend fun update(poi: Poi)

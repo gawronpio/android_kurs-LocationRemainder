@@ -28,10 +28,10 @@ class DetailFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         val poiDao = PoiDatabase.getInstance(requireContext()).poiDatabaseDao
-        viewModel = ViewModelProvider(this, DetailViewModelFactory(poiDao))[DetailViewModel::class.java]
+        viewModel = ViewModelProvider(this, DetailViewModelFactory(poiDao, requireActivity().application))[DetailViewModel::class.java]
 
         val args: DetailFragmentArgs by navArgs()
-        viewModel.poiData = args.poiData
+        viewModel.setvariables(args.poiData)
 
         binding.detailViewModel = viewModel
 
@@ -50,17 +50,15 @@ class DetailFragment : Fragment() {
 
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
-        binding.detailRadiusSeekbar.progress = viewModel.poiData?.radius?.toInt() ?: getString(R.string.default_radius).toInt()
+        binding.detailRadiusSeekbar.progress = viewModel.radius.value?.toInt() ?: getString(R.string.default_radius).toInt()
 
         binding.detailSaveBtn.setOnClickListener {
             if(binding.detailTitle.text.isNullOrBlank()) {
                 Toast.makeText(requireContext(), getString(R.string.fields_needed), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            viewModel.poiData?.title = binding.detailTitle.text.toString()
-            viewModel.poiData?.description = binding.detailDescription.text.toString()
-            viewModel.poiData?.radius = binding.detailRadiusSeekbar.progress.toDouble()
-            viewModel.savePoi()
+            val result = Bundle().apply { putParcelable("newPoi", viewModel.getPoi()) }
+            parentFragmentManager.setFragmentResult("poiData", result)
             findNavController().popBackStack(R.id.mainFragment, false)
         }
     }
