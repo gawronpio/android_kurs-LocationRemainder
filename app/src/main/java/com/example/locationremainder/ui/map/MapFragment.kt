@@ -49,6 +49,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
             findNavController().navigate(MapFragmentDirections.actionMapFragmentToDetailFragment(viewModel.poi))
         }
+
+        Toast.makeText(requireContext(), getString(R.string.map_instructions), Toast.LENGTH_LONG).show()
     }
 
     @SuppressLint("MissingPermission")

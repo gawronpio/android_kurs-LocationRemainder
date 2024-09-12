@@ -18,6 +18,8 @@
     <string name="radius">Radius</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
+    <string name="fields_needed">Set Title before save</string>
+    <string name="map_instructions">Pick POI to set marker and save position as remainder location.</string>
 
     <string name="unit_m">%1$dm</string>
 
@@ -27,5 +29,4 @@
     <string name="max_radius">1000</string>
     <string name="min_radius">15</string>
     <string name="default_radius">100</string>
-    <string name="fields_needed">Set Title before save</string>
 </resources>
