@@ -12,7 +12,7 @@ import com.example.locationremainder.data.Poi
 import com.example.locationremainder.data.PoiDao
 import kotlinx.coroutines.launch
 
-const val TAG = "MainViewModel"
+private const val TAG = "MainViewModel"
 
 class MainViewModelFactory(
     private val poiDao: PoiDao,
@@ -35,24 +35,21 @@ class MainViewModel(private val poiDao: PoiDao, application: Application) : Andr
         viewModelScope.launch { pois.value =  poiDao.getAll() }
     }
 
-    fun saveNewPoiAndRefresh(newPoi: Poi){
-        var newId: Long? = null
+    fun saveNewPoiAndRefresh(poi: Poi){
+        Log.d(TAG, "SaveNewPoiAndRefresh, id: ${poi.id}")
         viewModelScope.launch {
-            if (newPoi.id == null) {
-                newId = poiDao.insert(newPoi)
-                newPoi.id = newId
-                _newPoi.value = newPoi
+            if (poi.id == null) {
+                val newId = poiDao.insert(poi)
+                poi.id = newId
             } else {
-                poiDao.update(newPoi)
+                poiDao.update(poi)
             }
+            _newPoi.value = poi
             pois.value =  poiDao.getAll()
         }
     }
 
-    fun createGeofence() {
-        viewModelScope.launch {
-
-            _newPoi.value = null
-        }
+    fun deleteNewPoi() {
+        _newPoi.value = null
     }
 }

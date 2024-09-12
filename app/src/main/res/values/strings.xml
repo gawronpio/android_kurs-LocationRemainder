@@ -5,10 +5,12 @@
     <string name="logout">Logout</string>
     <string name="logout_failed">Logout failed</string>
     <string name="location_request_info">This application requires access to a precise location for best performance.\nPlease allow this access on the next screen.</string>
+    <string name="background_location_request_info">This application requires access to a background location for best performance.\nPlease allow this access on the next screen.</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="poi_needed">Please pick a location firstly</string>
-    <string name="location_permissions_denied">Location privileges have not been granted!\nThe functionality of the application is significantly limited.</string>
+    <string name="location_permissions_denied">Location permissions have not been granted!\nThe functionality of the application is significantly limited.</string>
+    <string name="background_location_permissions_denied">Background location permissions have not been granted!\nThe functionality of the application is significantly limited.</string>
     <string name="accept_poi_desc">Accepts POI as remainder location</string>
     <string name="adds_new_remainder_location_desc">Adds new remainder location</string>
     <string name="no_data">No data</string>
@@ -26,6 +28,16 @@
     <string name="map_type_terrain">Terrain</string>
     <string name="map_type_fancy">Fancy</string>
     <string name="map_style_failed">Map style setting failed</string>
+
+    <string name="geofence_not_available">Geofence service is not available now</string>
+    <string name="geofence_too_many_geofences">Your app has registered too many geofences</string>
+    <string name="geofence_too_many_pending_intents">
+        You have provided too many PendingIntents to the addGeofences() call
+    </string>
+    <string name="unknown_geofence_error">
+        Unknown error: the Geofence service is not available now
+    </string>
+    <string name="geofence_add_failed">Adding geofence failed</string>
 
     <string name="unit_m">%1$dm</string>
 

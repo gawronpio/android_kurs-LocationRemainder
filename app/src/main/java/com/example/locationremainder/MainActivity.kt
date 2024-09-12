@@ -9,6 +9,10 @@ import androidx.databinding.DataBindingUtil
 import com.example.locationremainder.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        internal const val ACTION_GEOFENCE_EVENT = "MainActivity.geofences.action.ACTION_GEOFENCE_EVENT"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
