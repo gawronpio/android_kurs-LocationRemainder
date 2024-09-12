@@ -43,6 +43,7 @@ class DetailFragment : Fragment() {
 
         binding.detailRadiusSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                viewModel.radius.value = progress.toFloat()
                 binding.detailRadiusText.text = String.format(getString(R.string.unit_m), progress)
             }
 
