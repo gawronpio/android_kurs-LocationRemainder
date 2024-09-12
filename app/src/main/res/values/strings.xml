@@ -20,6 +20,12 @@
     <string name="longitude">Longitude</string>
     <string name="fields_needed">Set Title before save</string>
     <string name="map_instructions">Pick POI to set marker and save position as remainder location.</string>
+    <string name="map_type_normal">Normal</string>
+    <string name="map_type_hybrid">Hybrid</string>
+    <string name="map_type_satellite">Satellite</string>
+    <string name="map_type_terrain">Terrain</string>
+    <string name="map_type_fancy">Fancy</string>
+    <string name="map_style_failed">Map style setting failed</string>
 
     <string name="unit_m">%1$dm</string>
 
