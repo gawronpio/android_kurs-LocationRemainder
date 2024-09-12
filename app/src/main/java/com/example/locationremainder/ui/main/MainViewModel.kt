@@ -22,10 +22,10 @@ class MainViewModelFactory(
     }
 }
 
-class MainViewModel(poiDao: PoiDao, application: Application) : AndroidViewModel(application) {
+class MainViewModel(private val poiDao: PoiDao, application: Application) : AndroidViewModel(application) {
     var pois = MutableLiveData<List<Poi>?>(null)
 
-    init {
+    fun refresh() {
         viewModelScope.launch { pois.value =  poiDao.getAll() }
     }
 }

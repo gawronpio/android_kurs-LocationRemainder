@@ -3,7 +3,6 @@ package com.example.locationremainder.ui.main
 import android.content.pm.PackageManager
 import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -21,7 +20,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.locationremainder.R
-import com.example.locationremainder.data.Poi
 import com.example.locationremainder.data.PoiDao
 import com.example.locationremainder.data.PoiDatabase
 import com.example.locationremainder.databinding.FragmentMainBinding
@@ -106,6 +104,8 @@ class MainFragment : Fragment() {
                 binding.noDataText.isVisible = false
             }
         }
+
+        viewModel.refresh()
 
         return binding.root
     }
