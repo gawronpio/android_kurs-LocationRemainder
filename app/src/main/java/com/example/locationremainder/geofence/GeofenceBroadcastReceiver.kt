@@ -43,16 +43,20 @@ class GeofenceBroadcastReceiver: BroadcastReceiver() {
                         poiDao = PoiDatabase.getInstance(context).poiDatabaseDao
                         CoroutineScope(Dispatchers.IO).launch {
                             val poi = poiDao!!.get(fenceId)
+                            if(poi == null) {
+                                Log.e(TAG, "No POI found with fence ID: $fenceId")
+                                return@launch
+                            }
                             val messageBody = String.format(
                                 context.resources.getString(R.string.message_body_template),
-                                poi?.location,
-                                poi?.title
+                                poi.location,
+                                poi.title
                             )
                             val notificationManager = ContextCompat.getSystemService(
                                 context,
                                 NotificationManager::class.java
                             ) as NotificationManager
-                            notificationManager.sendNotification(title, messageBody, context)
+                            notificationManager.sendNotification(poi.id!!, title, messageBody, context)
                         }
                     }
                 }

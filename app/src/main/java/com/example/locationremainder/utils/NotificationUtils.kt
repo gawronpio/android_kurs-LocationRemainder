@@ -10,8 +10,9 @@ import com.example.locationremainder.R
 
 private const val NOTIFICATION_ID = 0
 
-fun NotificationManager.sendNotification(title: String, messageBody: String, context: Context) {
+fun NotificationManager.sendNotification(id: Long, title: String, messageBody: String, context: Context) {
     val contentIntent = Intent(context, MainActivity::class.java)
+    contentIntent.putExtra("id", id)
     val contentPendingIntent = PendingIntent.getActivity(
         context,
         NOTIFICATION_ID,

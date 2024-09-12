@@ -184,6 +184,17 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().intent.getLongExtra("id", -1).let { id ->
+            if (id != -1L) {
+                lifecycleScope.launch {
+                    val poi = poiDao.get(id)
+                    poi?.let {
+                        findNavController().navigate(MainFragmentDirections.actionMainFragmentToDetailFragment(it))
+                    }
+                }
+            }
+        }
+
         requestPermissions()
     }
 
@@ -265,6 +276,7 @@ class MainFragment : Fragment() {
         }
     }
 
+    @SuppressLint("NewApi")
     private fun requestNotificationPermission(): Boolean {
         return if(!hasNotificationPermission()) {
             Snackbar
