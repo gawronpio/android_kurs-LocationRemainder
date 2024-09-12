@@ -36,7 +36,6 @@ class MainViewModel(private val poiDao: PoiDao, application: Application) : Andr
     }
 
     fun saveNewPoiAndRefresh(poi: Poi){
-        Log.d(TAG, "SaveNewPoiAndRefresh, id: ${poi.id}")
         viewModelScope.launch {
             if (poi.id == null) {
                 val newId = poiDao.insert(poi)

@@ -1,9 +1,12 @@
 package com.example.locationremainder.ui.main
 
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -17,7 +20,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -83,7 +85,7 @@ class MainFragment : Fragment() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if(isGranted) {
-            startGeoFencing()
+            requestBackgroundLocationPermission()
         } else {
             Toast.makeText(requireContext(),
                 getString(R.string.location_permissions_denied), Toast.LENGTH_LONG).show()
@@ -93,10 +95,19 @@ class MainFragment : Fragment() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         if(isGranted) {
+            requestNotificationPermission()
             startGeoFencing()
         } else {
             Toast.makeText(requireContext(),
                 getString(R.string.background_location_permissions_denied), Toast.LENGTH_LONG).show()
+        }
+    }
+    private val requestNotificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if(!isGranted) {
+            Toast.makeText(requireContext(),
+                getString(R.string.notification_permissions_denied), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -119,6 +130,11 @@ class MainFragment : Fragment() {
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+
+        createNotificationChannel(
+            getString(R.string.notification_channel_id),
+            getString(R.string.notification_channel_name)
+        )
 
         requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner)
 
@@ -178,8 +194,11 @@ class MainFragment : Fragment() {
 
     @SuppressLint("NewApi")
     private fun requestPermissions() {
-        requestLocationPermission()
-        requestBackgroundLocationPermission()
+        if(requestLocationPermission()) {
+            if(requestBackgroundLocationPermission()) {
+                requestNotificationPermission()
+            }
+        }
     }
 
     private fun hasPermissions(permission: String): Boolean {
@@ -201,34 +220,65 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun requestLocationPermission() {
-        if(!hasLocationPermissions()) {
-            val snackbar = Snackbar.make(
-                binding.root,
-                getString(R.string.location_request_info),
-                Snackbar.LENGTH_INDEFINITE)
-            snackbar.setAction(getString(R.string.ok)) {
-                requestLocationPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
-            }
-            snackbar.show()
+    private  fun hasNotificationPermission(): Boolean {
+        return if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            true
         } else {
-            startGeoFencing()
+            hasPermissions(android.Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private fun requestBackgroundLocationPermission() {
-        if(!hasBackgroundLocationPermissions()) {
-            val snackbar = Snackbar.make(
-                binding.root,
-                getString(R.string.background_location_request_info),
-                Snackbar.LENGTH_INDEFINITE)
-            snackbar.setAction(getString(R.string.ok)) {
-                requestBackgroundLocationPermissionLauncher.launch(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-            }
-            snackbar.show()
+    private fun requestLocationPermission(): Boolean {
+        return if(!hasLocationPermissions()) {
+            Snackbar
+                .make(
+                    binding.root,
+                    getString(R.string.location_request_info),
+                    Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(R.string.ok)) {
+                    requestLocationPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                }
+                .show()
+            false
         } else {
             startGeoFencing()
+            true
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private fun requestBackgroundLocationPermission(): Boolean {
+        return if(!hasBackgroundLocationPermissions()) {
+            Snackbar
+                .make(
+                    binding.root,
+                    getString(R.string.background_location_request_info),
+                    Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(R.string.ok)) {
+                    requestBackgroundLocationPermissionLauncher.launch(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                }
+                .show()
+            false
+        } else {
+            startGeoFencing()
+            true
+        }
+    }
+
+    private fun requestNotificationPermission(): Boolean {
+        return if(!hasNotificationPermission()) {
+            Snackbar
+                .make(
+                    binding.root,
+                    getString(R.string.notification_request_info),
+                    Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(R.string.ok)) {
+                    requestNotificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                }
+                .show()
+            false
+        } else {
+            true
         }
     }
 
@@ -285,5 +335,21 @@ class MainFragment : Fragment() {
         }
 
         viewModel.deleteNewPoi()
+    }
+
+    private fun createNotificationChannel(channelId: String, channelName: String) {
+        val notificationChannel = NotificationChannel(
+            channelId,
+            channelName,
+            NotificationManager.IMPORTANCE_HIGH
+        )
+
+        notificationChannel.enableLights(true)
+        notificationChannel.lightColor = Color.BLUE
+        notificationChannel.enableVibration(true)
+        notificationChannel.description = channelName
+
+        val notificationManager = requireActivity().getSystemService(NotificationManager::class.java)
+        notificationManager.createNotificationChannel(notificationChannel)
     }
 }

@@ -6,11 +6,13 @@
     <string name="logout_failed">Logout failed</string>
     <string name="location_request_info">This application requires access to a precise location for best performance.\nPlease allow this access on the next screen.</string>
     <string name="background_location_request_info">This application requires access to a background location for best performance.\nPlease allow this access on the next screen.</string>
+    <string name="notification_request_info">This application requires notification permission for best performance.\nPlease allow this permission on the next screen.</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="poi_needed">Please pick a location firstly</string>
-    <string name="location_permissions_denied">Location permissions have not been granted!\nThe functionality of the application is significantly limited.</string>
-    <string name="background_location_permissions_denied">Background location permissions have not been granted!\nThe functionality of the application is significantly limited.</string>
+    <string name="location_permissions_denied">Location permission have not been granted!\nThe functionality of the application is significantly limited.</string>
+    <string name="background_location_permissions_denied">Background location permission have not been granted!\nThe functionality of the application is significantly limited.</string>
+    <string name="notification_permissions_denied">Notification permission have not been granted!\nApplication will not be able to show the location remainder notification.</string>
     <string name="accept_poi_desc">Accepts POI as remainder location</string>
     <string name="adds_new_remainder_location_desc">Adds new remainder location</string>
     <string name="no_data">No data</string>
@@ -40,6 +42,10 @@
     <string name="geofence_add_failed">Adding geofence failed</string>
 
     <string name="unit_m">%1$dm</string>
+
+    <string name="notification_channel_id">location_remainder</string>
+    <string name="notification_channel_name">Location Remainder</string>
+    <string name="message_body_template">You are near %s. Don\'t forget %s</string>
 
     <string name="default_latitude">52.225665764</string>
     <string name="default_longitude">21.003833318</string>
