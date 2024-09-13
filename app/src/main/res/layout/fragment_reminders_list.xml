@@ -10,10 +10,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.main.MainFragment">
+        tools:context=".ui.reminderslist.RemindersListFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/poi_recycler"
+            android:id="@+id/reminders_recycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/margin_very_small"
@@ -40,7 +40,8 @@
             android:id="@+id/no_data_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/poi_recycler"
+            android:contentDescription="@string/no_data_description"
+            app:layout_constraintBottom_toBottomOf="@+id/reminders_recycler"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

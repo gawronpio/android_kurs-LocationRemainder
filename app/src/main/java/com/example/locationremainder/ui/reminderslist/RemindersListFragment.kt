@@ -1,4 +1,4 @@
-package com.example.locationremainder.ui.main
+package com.example.locationremainder.ui.reminderslist
 
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
@@ -8,7 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -29,10 +29,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.locationremainder.MainActivity.Companion.ACTION_GEOFENCE_EVENT
 import com.example.locationremainder.R
-import com.example.locationremainder.data.Poi
-import com.example.locationremainder.data.PoiDao
-import com.example.locationremainder.data.PoiDatabase
-import com.example.locationremainder.databinding.FragmentMainBinding
+import com.example.locationremainder.data.ReminderDataSource
+import com.example.locationremainder.data.dto.ReminderDTO
+import com.example.locationremainder.databinding.FragmentRemindersListBinding
 import com.example.locationremainder.geofence.GeofenceBroadcastReceiver
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.location.Geofence
@@ -45,17 +44,17 @@ import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
+import org.koin.core.component.inject
+import org.koin.core.component.KoinComponent
+import com.example.locationremainder.data.dto.Result
 
-private const val TAG = "MainFragment"
+private const val TAG = "RemindersListFragment"
 
-class MainFragment : Fragment() {
+class RemindersListFragment : Fragment(), KoinComponent {
 
-    private lateinit var binding: FragmentMainBinding
-    private val poiDao: PoiDao by lazy { PoiDatabase.getInstance(requireContext()).poiDatabaseDao }
-
-    private val viewModel: MainViewModel by viewModels() {
-        MainViewModelFactory(poiDao, requireActivity().application)
-    }
+    private lateinit var binding: FragmentRemindersListBinding
+    private val remindersLocalRepository: ReminderDataSource by inject()
+    private val viewModel: RemindersListViewModel by viewModel()
 
     private val menuProvider = object : MenuProvider {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -128,7 +127,7 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_reminders_list, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
         createNotificationChannel(
@@ -139,22 +138,26 @@ class MainFragment : Fragment() {
         requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner)
 
         val manager = LinearLayoutManager(activity)
-        binding.poiRecycler.layoutManager = manager
-        val adapter = MainRecyclerAdapter(MainListener { poiId ->
+        binding.remindersRecycler.layoutManager = manager
+        val adapter = RemindersListRecyclerAdapter(RemindersListListener { remindId ->
             lifecycleScope.launch {
-                val poiData = poiDao.get(poiId)
-                poiData?.let {
-                    findNavController().navigate(MainFragmentDirections.actionMainFragmentToDetailFragment(it))
+                val result = remindersLocalRepository.getReminder(remindId)
+                if(result is Result.Success) {
+                    findNavController().navigate(
+                        RemindersListFragmentDirections.actionMainFragmentToDetailFragment(
+                            result.data
+                        )
+                    )
                 }
             }
         })
-        binding.poiRecycler.adapter = adapter
+        binding.remindersRecycler.adapter = adapter
 
         binding.addBtn.setOnClickListener {
-            findNavController().navigate(MainFragmentDirections.actionMainFragmentToMapFragment())
+            findNavController().navigate(RemindersListFragmentDirections.actionMainFragmentToMapFragment())
         }
 
-        viewModel.pois.observe(viewLifecycleOwner) {
+        viewModel.reminders.observe(viewLifecycleOwner) {
             if(it.isNullOrEmpty()) {
                 binding.noDataImg.isVisible = true
                 binding.noDataText.isVisible = true
@@ -167,17 +170,17 @@ class MainFragment : Fragment() {
 
         viewModel.refresh()
 
-        parentFragmentManager.setFragmentResultListener("poiData", this) { key, bundle ->
-            val newPoi: Poi? = bundle.getParcelable("newPoi")
-            newPoi?.let {
-                viewModel.saveNewPoiAndRefresh(it)
+        parentFragmentManager.setFragmentResultListener("reminderData", this) { key, bundle ->
+            val newReminderDTO: ReminderDTO? = bundle.getParcelable("newReminder")
+            newReminderDTO?.let {
+                viewModel.saveNewReminderAndRefresh(it)
                 Toast.makeText(requireContext(), getString(R.string.remainder_saved), Toast.LENGTH_SHORT).show()
             }
         }
 
         geofencingClient = LocationServices.getGeofencingClient(requireActivity())
 
-        viewModel.newPoi.observe(viewLifecycleOwner) {
+        viewModel.newReminderDTO.observe(viewLifecycleOwner) {
             it?.let { createGeofence() }
         }
 
@@ -187,13 +190,18 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Gets the reminder id from notification
         requireActivity().intent.getLongExtra("id", -1).let { id ->
             if (id != -1L) {
                 requireActivity().intent.removeExtra("id")
                 lifecycleScope.launch {
-                    val poi = poiDao.get(id)
-                    poi?.let {
-                        findNavController().navigate(MainFragmentDirections.actionMainFragmentToDetailFragment(it))
+                    val result = remindersLocalRepository.getReminder(id)
+                    if(result is Result.Success) {
+                        findNavController().navigate(
+                            RemindersListFragmentDirections.actionMainFragmentToDetailFragment(
+                                result.data
+                            )
+                        )
                     }
                 }
             }
@@ -321,12 +329,12 @@ class MainFragment : Fragment() {
                 requireContext(),
                 getString(R.string.location_permissions_denied), Toast.LENGTH_LONG
             ).show()
-            viewModel.deleteNewPoi()
+            viewModel.deleteNewReminder()
             return
         }
-        val id = viewModel.newPoi.value!!.id.toString()
-        val position = LatLng(viewModel.newPoi.value!!.latitude, viewModel.newPoi.value!!.longitude)
-        val radius = viewModel.newPoi.value!!.radius!!.toFloat()
+        val id = viewModel.newReminderDTO.value!!.id.toString()
+        val position = LatLng(viewModel.newReminderDTO.value!!.latitude, viewModel.newReminderDTO.value!!.longitude)
+        val radius = viewModel.newReminderDTO.value!!.radius!!.toFloat()
 
 
         val geofence = Geofence.Builder()
@@ -350,7 +358,7 @@ class MainFragment : Fragment() {
                 Toast.makeText(requireContext(), getString(R.string.geofence_add_failed), Toast.LENGTH_SHORT).show()
             }
 
-        viewModel.deleteNewPoi()
+        viewModel.deleteNewReminder()
     }
 
     private fun createNotificationChannel(channelId: String, channelName: String) {

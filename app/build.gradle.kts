@@ -93,6 +93,7 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
+    implementation(libs.io.insert.koin.android)
 
     testImplementation(libs.junit)
 

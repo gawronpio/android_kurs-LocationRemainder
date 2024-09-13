@@ -1,4 +1,4 @@
-package com.example.locationremainder.data
+package com.example.locationremainder.data.dto
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
@@ -7,8 +7,8 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@Entity(tableName = "poi_table")
-data class Poi(
+@Entity(tableName = "reminders")
+data class ReminderDTO(
     @PrimaryKey(autoGenerate = true)
     var id: Long? = null,
 

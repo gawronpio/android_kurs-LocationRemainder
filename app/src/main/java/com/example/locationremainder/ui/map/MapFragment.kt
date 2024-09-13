@@ -2,7 +2,7 @@ package com.example.locationremainder.ui.map
 
 import android.annotation.SuppressLint
 import android.content.res.Resources
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -17,7 +17,7 @@ import androidx.core.view.MenuProvider
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.locationremainder.R
-import com.example.locationremainder.data.Poi
+import com.example.locationremainder.data.dto.ReminderDTO
 import com.example.locationremainder.databinding.FragmentMapBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -31,9 +31,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var binding: FragmentMapBinding
     private lateinit var map: GoogleMap
-    private val viewModel: MapViewModel by viewModels() {
-        MapViewModelFactory(requireActivity().application)
-    }
+    private val viewModel: MapViewModel by viewModel()
 
     private val menuProvider = object : MenuProvider {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -99,11 +97,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         binding.mapView.getMapAsync(this)
 
         binding.poiPickedBtn.setOnClickListener {
-            if(viewModel.poi.location.isBlank()) {
+            if(viewModel.reminderDTO.location.isBlank()) {
                 Toast.makeText(requireContext(), getString(R.string.poi_needed), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            findNavController().navigate(MapFragmentDirections.actionMapFragmentToDetailFragment(viewModel.poi))
+            findNavController().navigate(MapFragmentDirections.actionMapFragmentToDetailFragment(viewModel.reminderDTO))
         }
 
         Toast.makeText(requireContext(), getString(R.string.map_instructions), Toast.LENGTH_LONG).show()
@@ -162,7 +160,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     .title(poi.name)
             )
             poiMarker?.showInfoWindow()
-            viewModel.poi = Poi(
+            viewModel.reminderDTO = ReminderDTO(
                 latitude = poi.latLng.latitude,
                 longitude = poi.latLng.longitude,
                 location = poi.name

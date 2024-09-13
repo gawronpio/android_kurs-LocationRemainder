@@ -11,13 +11,13 @@
         android:label="WelcomeFragment" >
         <action
             android:id="@+id/action_welcomeFragment_to_mainFragment"
-            app:destination="@id/mainFragment"
+            app:destination="@id/remindersListFragment"
             app:popUpTo="@id/welcomeFragment"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.example.locationremainder.ui.main.MainFragment"
+        android:id="@+id/remindersListFragment"
+        android:name="com.example.locationremainder.ui.reminderslist.RemindersListFragment"
         android:label="MainFragment" >
         <action
             android:id="@+id/action_mainFragment_to_mapFragment"
@@ -40,7 +40,7 @@
         android:name="com.example.locationremainder.ui.detail.DetailFragment"
         android:label="DetailFragment" >
         <argument
-            android:name="poiData"
-            app:argType="com.example.locationremainder.data.Poi"/>
+            android:name="reminderData"
+            app:argType="com.example.locationremainder.data.dto.ReminderDTO"/>
     </fragment>
 </navigation>

@@ -8,17 +8,16 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.locationremainder.R
-import com.example.locationremainder.data.PoiDatabase
 import com.example.locationremainder.databinding.FragmentDetailBinding
 
 class DetailFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailBinding
-    private lateinit var viewModel: DetailViewModel
+    private val viewModel: DetailViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,11 +26,8 @@ class DetailFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val poiDao = PoiDatabase.getInstance(requireContext()).poiDatabaseDao
-        viewModel = ViewModelProvider(this, DetailViewModelFactory(poiDao, requireActivity().application))[DetailViewModel::class.java]
-
         val args: DetailFragmentArgs by navArgs()
-        viewModel.setvariables(args.poiData)
+        viewModel.setvariables(args.reminderData)
 
         binding.detailViewModel = viewModel
 
@@ -54,13 +50,13 @@ class DetailFragment : Fragment() {
         binding.detailRadiusSeekbar.progress = viewModel.radius.value?.toInt() ?: getString(R.string.default_radius).toInt()
 
         binding.detailSaveBtn.setOnClickListener {
-            if(binding.detailTitle.text.isNullOrBlank()) {
+            if(viewModel.title.value.isNullOrBlank()) {
                 Toast.makeText(requireContext(), getString(R.string.fields_needed), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val result = Bundle().apply { putParcelable("newPoi", viewModel.getPoi()) }
-            parentFragmentManager.setFragmentResult("poiData", result)
-            findNavController().popBackStack(R.id.mainFragment, false)
+            val result = Bundle().apply { putParcelable("newReminder", viewModel.getPoi()) }
+            parentFragmentManager.setFragmentResult("reminderData", result)
+            findNavController().popBackStack(R.id.remindersListFragment, false)
         }
     }
 }

@@ -1,32 +1,32 @@
-package com.example.locationremainder.ui.main
+package com.example.locationremainder.ui.reminderslist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.locationremainder.data.Poi
+import com.example.locationremainder.data.dto.ReminderDTO
 import com.example.locationremainder.databinding.ListItemBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainListener(val clickListener: (id: Long) -> Unit) {
-    fun onClick(poi: Poi) {
-        clickListener(poi.id!!)
+class RemindersListListener(val clickListener: (id: Long) -> Unit) {
+    fun onClick(reminderDTO: ReminderDTO) {
+        clickListener(reminderDTO.id!!)
     }
 }
 
 sealed class DataItem {
-    data class PoiRecyclerItem(val poi: Poi) : DataItem() {
-        override val id: Long = poi.id!!
+    data class PoiRecyclerItem(val reminderDTO: ReminderDTO) : DataItem() {
+        override val id: Long = reminderDTO.id!!
     }
 
     abstract val id: Long
 }
 
-class MainDiffCallback : DiffUtil.ItemCallback<DataItem>() {
+class RemindersListDiffCallback : DiffUtil.ItemCallback<DataItem>() {
     override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
         return oldItem.id == newItem.id
     }
@@ -36,13 +36,13 @@ class MainDiffCallback : DiffUtil.ItemCallback<DataItem>() {
     }
 }
 
-class MainRecyclerAdapter(private val clickListener: MainListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(MainDiffCallback()) {
+class RemindersListRecyclerAdapter(private val clickListener: RemindersListListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(RemindersListDiffCallback()) {
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     class ViewHolder private constructor(private val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Poi, clickListener: MainListener) {
-            binding.poi = item
+        fun bind(item: ReminderDTO, clickListener: RemindersListListener) {
+            binding.reminder = item
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }
@@ -59,8 +59,8 @@ class MainRecyclerAdapter(private val clickListener: MainListener) : ListAdapter
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> {
-                val poiItem = getItem(position) as DataItem.PoiRecyclerItem
-                holder.bind(poiItem.poi, clickListener)
+                val reminderItem = getItem(position) as DataItem.PoiRecyclerItem
+                holder.bind(reminderItem.reminderDTO, clickListener)
             }
         }
     }
@@ -69,7 +69,7 @@ class MainRecyclerAdapter(private val clickListener: MainListener) : ListAdapter
         return ViewHolder.from(parent)
     }
 
-    fun addAndSubmitList(list: List<Poi>?) {
+    fun addAndSubmitList(list: List<ReminderDTO>?) {
         if(list != null) {
             adapterScope.launch {
                 withContext(Dispatchers.Main) {
