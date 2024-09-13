@@ -25,7 +25,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 
-const val TAG = "MapFragment"
+private const val TAG = "MapFragment"
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
@@ -113,11 +113,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(p0: GoogleMap) {
         map = p0
 
-        viewModel.location.observe(viewLifecycleOwner) { location ->
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                location,
-                requireActivity().resources.getString(R.string.default_zoom_level).toFloatOrNull() ?: 10f))
+        viewModel.newLocation.observe(viewLifecycleOwner) { newLocation ->
+            if(newLocation) {
+                map.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        viewModel.location.value!!,
+                        requireActivity().resources.getString(R.string.default_zoom_level)
+                            .toFloatOrNull() ?: 10f
+                    )
+                )
+                viewModel.newLocationObserved()
+            }
         }
+
+        viewModel.findLocation()
 
         map.isMyLocationEnabled = viewModel.isLocationPermissionGranted()
         viewModel.findLocation()
