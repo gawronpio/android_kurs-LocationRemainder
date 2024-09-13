@@ -189,6 +189,7 @@ class MainFragment : Fragment() {
 
         requireActivity().intent.getLongExtra("id", -1).let { id ->
             if (id != -1L) {
+                requireActivity().intent.removeExtra("id")
                 lifecycleScope.launch {
                     val poi = poiDao.get(id)
                     poi?.let {
@@ -336,6 +337,7 @@ class MainFragment : Fragment() {
                 radius
             )
             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+            .setExpirationDuration(Geofence.NEVER_EXPIRE)
             .build()
 
         val geofencingRequest = GeofencingRequest.Builder()
@@ -343,11 +345,10 @@ class MainFragment : Fragment() {
             .addGeofence(geofence)
             .build()
 
-        geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent).run {
-            addOnFailureListener { exception ->
+        geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent)
+            .addOnFailureListener { exception ->
                 Toast.makeText(requireContext(), getString(R.string.geofence_add_failed), Toast.LENGTH_SHORT).show()
             }
-        }
 
         viewModel.deleteNewPoi()
     }

@@ -30,7 +30,7 @@ class GeofenceBroadcastReceiver: BroadcastReceiver() {
                 return
             }
 
-            if(geofencingEvent!!.hasError()) {
+            if(geofencingEvent.hasError()) {
                 val errorMessage = errorMessage(context!!, geofencingEvent.errorCode)
                 Log.e(TAG, errorMessage)
                 return
