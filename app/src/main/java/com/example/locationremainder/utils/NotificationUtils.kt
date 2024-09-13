@@ -4,10 +4,12 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.locationremainder.MainActivity
 import com.example.locationremainder.R
 
+private const val TAG = "NotificationUtils"
 private const val NOTIFICATION_ID = 0
 
 fun NotificationManager.sendNotification(id: Long, title: String, messageBody: String, context: Context) {

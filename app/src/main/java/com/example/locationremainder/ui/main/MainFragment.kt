@@ -118,7 +118,7 @@ class MainFragment : Fragment() {
             requireActivity(),
             0,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
         )
     }
 
@@ -169,7 +169,10 @@ class MainFragment : Fragment() {
 
         parentFragmentManager.setFragmentResultListener("poiData", this) { key, bundle ->
             val newPoi: Poi? = bundle.getParcelable("newPoi")
-            newPoi?.let { viewModel.saveNewPoiAndRefresh(it) }
+            newPoi?.let {
+                viewModel.saveNewPoiAndRefresh(it)
+                Toast.makeText(requireContext(), getString(R.string.remainder_saved), Toast.LENGTH_SHORT).show()
+            }
         }
 
         geofencingClient = LocationServices.getGeofencingClient(requireActivity())

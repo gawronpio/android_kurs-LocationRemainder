@@ -30,6 +30,7 @@
     <string name="map_type_terrain">Terrain</string>
     <string name="map_type_fancy">Fancy</string>
     <string name="map_style_failed">Map style setting failed</string>
+    <string name="remainder_saved">Remainder saved</string>
 
     <string name="geofence_not_available">Geofence service is not available now</string>
     <string name="geofence_too_many_geofences">Your app has registered too many geofences</string>
