@@ -17,16 +17,20 @@ class RemindersListViewModel(
     private val remindersLocalRepository: ReminderDataSource,
     application: Application
 ) : AndroidViewModel(application) {
-    var reminders = MutableLiveData<List<ReminderDTO>?>(null)
+    var reminders = MutableLiveData<List<ReminderDTO>?>()
     private val _newReminderDTO = MutableLiveData<ReminderDTO?>(null)
     val newReminderDTO: LiveData<ReminderDTO?> get() = _newReminderDTO
+    private val _showLoading = MutableLiveData(false)
+    val showLoading: LiveData<Boolean> get() = _showLoading
 
     fun refresh() {
+        _showLoading.value = true
         viewModelScope.launch {
             val result = remindersLocalRepository.getReminders()
             if(result is Result.Success) {
                 reminders.value = result.data
             }
+            _showLoading.postValue(false)
         }
     }
 
@@ -35,10 +39,7 @@ class RemindersListViewModel(
             val newId = remindersLocalRepository.saveReminder(reminderDTO)
             reminderDTO.id = newId
             _newReminderDTO.value = reminderDTO
-            val result = remindersLocalRepository.getReminders()
-            if(result is Result.Success) {
-                reminders.value = result.data
-            }
+            refresh()
         }
     }
 

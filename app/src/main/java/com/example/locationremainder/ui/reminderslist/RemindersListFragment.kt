@@ -129,6 +129,7 @@ class RemindersListFragment : Fragment(), KoinComponent {
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_reminders_list, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
 
         createNotificationChannel(
             getString(R.string.notification_channel_id),
