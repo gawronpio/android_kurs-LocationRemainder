@@ -160,12 +160,14 @@ class RemindersListFragment : Fragment(), KoinComponent {
 
         viewModel.reminders.observe(viewLifecycleOwner) {
             if(it.isNullOrEmpty()) {
-                binding.noDataImg.isVisible = true
-                binding.noDataText.isVisible = true
+                binding.noDataImg.visibility = View.VISIBLE
+                binding.noDataText.visibility = View.VISIBLE
+                binding.remindersRecycler.visibility = View.GONE
             } else {
+                binding.noDataImg.visibility = View.GONE
+                binding.noDataText.visibility = View.GONE
+                binding.remindersRecycler.visibility = View.VISIBLE
                 adapter.addAndSubmitList(it)
-                binding.noDataImg.isVisible = false
-                binding.noDataText.isVisible = false
             }
         }
 

@@ -42,6 +42,8 @@
             android:id="@+id/no_data_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:width="80dp"
+            android:height="80dp"
             android:contentDescription="@string/no_data_description"
             app:layout_constraintBottom_toBottomOf="@+id/reminders_recycler"
             app:layout_constraintEnd_toEndOf="parent"

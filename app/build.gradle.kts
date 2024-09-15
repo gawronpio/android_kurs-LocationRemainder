@@ -63,6 +63,23 @@ android {
         ignoreList.add("keyToIgnore") // Ignore the key "keyToIgnore"
         ignoreList.add("sdk.*")       // Ignore all keys matching the regexp "sdk.*"
     }
+    configurations.all {
+        resolutionStrategy {
+            force("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+        }
+    }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            merges += "META-INF/LICENSE*"
+        }
+    }
+    configurations.all {
+        resolutionStrategy {
+            force("androidx.test:core:1.6.1")
+        }
+    }
 }
 
 dependencies {
@@ -94,18 +111,35 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
     implementation(libs.io.insert.koin.android)
+    implementation(libs.androidx.rules)
+    implementation(libs.androidx.espresso.idling.resource)
 
     testImplementation(libs.junit)
-    testImplementation(libs.mockito.core)
+    testImplementation(libs.dexmaker.mockito)
     testImplementation(libs.hamcrest.all)
     testImplementation(libs.junit.jupiter)
-    testImplementation(libs.androidx.junit)
+    testImplementation(libs.androidx.junit.ktx)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.robolectric)
-    testImplementation(libs.androidx.junit.ktx)
     testImplementation(libs.kotlinx.coroutines.core)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.koin.test.junit4)
 
-    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.junit.ktx)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.contrib)
+    androidTestImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.kotlinx.coroutines.core)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.koin.test)
+    androidTestImplementation(libs.koin.test.junit4)
+    androidTestImplementation(libs.androidx.core.ktx)
+    androidTestImplementation(libs.junit.jupiter)
+    androidTestImplementation(libs.androidx.core)
+    androidTestImplementation(libs.dexmaker.mockito)
+    androidTestImplementation(libs.androidx.fragment.testing)
+    androidTestImplementation(libs.hamcrest.all)
+
+    debugImplementation(libs.androidx.fragment.testing)
 }
