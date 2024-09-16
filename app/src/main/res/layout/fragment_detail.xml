@@ -6,7 +6,7 @@
     <data>
         <variable
             name="detailViewModel"
-            type="com.example.locationremainder.ui.detail.DetailViewModel" />
+            type="com.udacity.project4.ui.detail.DetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -6,10 +6,10 @@
     <data>
         <variable
             name="reminder"
-            type="com.example.locationremainder.data.dto.ReminderDTO" />
+            type="com.udacity.project4.data.dto.ReminderDTO" />
         <variable
             name="clickListener"
-            type="com.example.locationremainder.ui.reminderslist.RemindersListListener" />
+            type="com.udacity.project4.ui.reminderslist.RemindersListListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

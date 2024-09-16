@@ -38,7 +38,7 @@
             android:name=".geofence.GeofenceBroadcastReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.example.locationremainder.ACTION_GEOFENCE_EVENT"/>
+                <action android:name="com.udacity.project4.ACTION_GEOFENCE_EVENT"/>
             </intent-filter>
         </receiver>
     </application>

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.example.locationremainder.ui.welcome.WelcomeFragment"
+        android:name="com.udacity.project4.ui.welcome.WelcomeFragment"
         android:label="WelcomeFragment" >
         <action
             android:id="@+id/action_welcomeFragment_to_mainFragment"
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/remindersListFragment"
-        android:name="com.example.locationremainder.ui.reminderslist.RemindersListFragment"
+        android:name="com.udacity.project4.ui.reminderslist.RemindersListFragment"
         android:label="MainFragment" >
         <action
             android:id="@+id/action_mainFragment_to_mapFragment"
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.example.locationremainder.ui.map.MapFragment"
+        android:name="com.udacity.project4.ui.map.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" >
         <action
@@ -37,10 +37,10 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.locationremainder.ui.detail.DetailFragment"
+        android:name="com.udacity.project4.ui.detail.DetailFragment"
         android:label="DetailFragment" >
         <argument
             android:name="reminderData"
-            app:argType="com.example.locationremainder.data.dto.ReminderDTO"/>
+            app:argType="com.udacity.project4.data.dto.ReminderDTO"/>
     </fragment>
 </navigation>

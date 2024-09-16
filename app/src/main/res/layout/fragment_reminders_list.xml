@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.locationremainder.ui.reminderslist.RemindersListViewModel" />
+            type="com.udacity.project4.ui.reminderslist.RemindersListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

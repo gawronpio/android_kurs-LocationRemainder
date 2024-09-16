@@ -10,11 +10,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.locationremainder"
+    namespace = "com.udacity.project4"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.locationremainder"
+        applicationId = "com.udacity.project4"
         minSdk = 28
         targetSdk = 34
         versionCode = 1
